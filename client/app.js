@@ -3,7 +3,8 @@ var app=angular.module("goal",[
     'home',
     'project',
     'purpose',
-    'skill'
+    'skill',
+    'mongodb'
 ]);
 app.config(function($stateProvider,$httpProvider, $urlRouterProvider) {
       //Enable cross domain calls
