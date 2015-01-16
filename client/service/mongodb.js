@@ -18,10 +18,19 @@ app.factory("MongodbService",function($http){
             return database;
         },
         get:function(url){
-            return $http.get(url);
+            return $http.get(url).then(function(body){
+                return body.data;
+            });
         },
         post:function(url,data,config){
-            return $http.post(url,JSON.stringify(data),config);
+            return $http.post(url,data).then(function(body){
+                return body.data;
+            });
+        },
+        delete:function(url){
+            return $http.delete(url).then(function(body){
+                return body.data;
+            })
         }
     };
     return service;

@@ -14,11 +14,26 @@ app.config(function($stateProvider,$httpProvider) {
                     return ProjectService.getProjects();
                 }
             },
-            controller:function($scope,projects,ProjectService){
+            controller:function($scope,$state,$stateParams,projects,ProjectService){
                 $scope.projects=projects;
                 $scope.newProject={};
                 $scope.add=function(project){
-                    ProjectService.createProject(project);
+                    ProjectService.createProject(project).then(function(){
+                        $state.transitionTo($state.current, $stateParams, {
+                            reload: true,
+                            inherit: false,
+                            notify: true
+                        });
+                    });
+                };
+                $scope.delete=function(project){
+                    ProjectService.deleteProject(project._id.$oid).then(function(){
+                        $state.transitionTo($state.current, $stateParams, {
+                            reload: true,
+                            inherit: false,
+                            notify: true
+                        });
+                    });
                 }
             }
         });
@@ -34,6 +49,10 @@ app.factory('ProjectService',function(MongodbService){
         createProject:function(data){
             var url=MongodbService.getDatabase()+collection+"?"+MongodbService.getApiKey();
             return MongodbService.post(url,data);
+        },
+        deleteProject:function(id){
+            var url=MongodbService.getDatabase()+collection+"/"+id+"?"+MongodbService.getApiKey();
+            return MongodbService.delete(url);
         }
     };
     return service;
