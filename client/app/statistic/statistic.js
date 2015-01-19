@@ -7,10 +7,22 @@ app.config(function($stateProvider) {
             resolve:{
                 records:function(StatisticService){
                     return StatisticService.getRecords();
+                },
+                projects:function(ProjectService){
+                    return ProjectService.getProjects();
+                },
+                purposes:function(PurposeService){
+                    return PurposeService.getPurpose();
+                },
+                skills:function(SkillService){
+                    return SkillService.getSkills();
                 }
             },
-            controller:function($scope,$state,$stateParams,records,StatisticService){
+            controller:function($scope,$state,$stateParams,records,projects,purposes,skills,StatisticService){
                 $scope.records=records;
+                $scope.projects=projects;
+                $scope.purposes=purposes;
+                $scope.skills=skills;
                 $scope.newRecord={};
                 $scope.add=function(record){
                     StatisticService.createRecord(record).then(function(){

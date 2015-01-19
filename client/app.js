@@ -5,7 +5,8 @@ var app=angular.module("goal",[
     'purpose',
     'skill',
     'mongodb',
-    'statistic'
+    'statistic',
+    'kendo.directives'
 ]);
 app.config(function($stateProvider,$httpProvider, $urlRouterProvider) {
       //Enable cross domain calls
