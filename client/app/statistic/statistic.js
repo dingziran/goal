@@ -1,19 +1,19 @@
-var app=angular.module('skill',[]);
+var app=angular.module('statistic',[]);
 app.config(function($stateProvider) {
     $stateProvider
-        .state('skill', {
-            url: "/skill",
-            templateUrl: "app/skill/skill.html",
+        .state('statistic', {
+            url: "/statistic",
+            templateUrl: "app/statistic/statistic.html",
             resolve:{
-                skills:function(SkillService){
-                    return SkillService.getSkills();
+                records:function(StatisticService){
+                    return StatisticService.getRecords();
                 }
             },
-            controller:function($scope,$state,$stateParams,skills,SkillService){
-                $scope.skills=skills;
-                $scope.newSkill={};
-                $scope.add=function(skill){
-                    SkillService.createSkill(skill).then(function(){
+            controller:function($scope,$state,$stateParams,records,StatisticService){
+                $scope.records=records;
+                $scope.newRecord={};
+                $scope.add=function(record){
+                    StatisticService.createRecord(record).then(function(){
                         $state.transitionTo($state.current, $stateParams, {
                             reload: true,
                             inherit: false,
@@ -21,8 +21,8 @@ app.config(function($stateProvider) {
                         });
                     });
                 };
-                $scope.delete=function(skill){
-                    SkillService.deleteSkill(skill._id.$oid).then(function(){
+                $scope.delete=function(record){
+                    StatisticService.deleteRecord(record._id.$oid).then(function(){
                         $state.transitionTo($state.current, $stateParams, {
                             reload: true,
                             inherit: false,
@@ -34,18 +34,18 @@ app.config(function($stateProvider) {
         });
 });
 
-app.factory('SkillService',function(MongodbService){
-    var collection="/skill";
+app.factory('StatisticService',function(MongodbService){
+    var collection="/record";
     var service={
-        getSkills:function(){
+        getRecords:function(index,size){
             var url=MongodbService.getDatabase()+collection+"?"+MongodbService.getApiKey();
             return MongodbService.get(url);
         },
-        createSkill:function(data){
+        createRecord:function(data){
             var url=MongodbService.getDatabase()+collection+"?"+MongodbService.getApiKey();
             return MongodbService.post(url,data);
         },
-        deleteSkill:function(id){
+        deleteRecord:function(id){
             var url=MongodbService.getDatabase()+collection+"/"+id+"?"+MongodbService.getApiKey();
             return MongodbService.delete(url);
         }
